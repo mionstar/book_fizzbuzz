@@ -35,7 +35,7 @@ export function useGeometry(axisCount, cx, cy, radius) {
   }
 
   // 軸ラベルの配置座標（外周より少し外側）
-  function labelPosition(i, n, r, centerX, centerY, offset = 24) {
+  function labelPosition(i, n, r, centerX, centerY, offset = 36) {
     const angle = axisAngle(i, n)
     return {
       x: centerX + (r + offset) * Math.cos(angle),

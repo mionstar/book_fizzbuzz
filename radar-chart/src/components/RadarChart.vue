@@ -117,7 +117,7 @@ const props = defineProps({
 })
 
 const svgSize = computed(() => props.config.layout === 'wide' ? 400 : 280)
-const radius = computed(() => svgSize.value * 0.35)
+const radius = computed(() => svgSize.value * 0.28)
 const cx = computed(() => svgSize.value / 2)
 const cy = computed(() => svgSize.value / 2)
 const axisCount = toRef(() => props.config.axes)
@@ -126,7 +126,7 @@ const { gridPolygons, axisLines, labelPositions, calcDataPoints } = useGeometry(
 
 const dataMax = 100
 const LINE_HEIGHT = 15
-const MAX_CHARS = 9
+const MAX_CHARS = 10
 
 function wrapLabel(text) {
   if (!text) return ['']
@@ -156,7 +156,7 @@ const fullBgStyle = computed(() => {
 <style scoped>
 .radar-wrapper {
   display: inline-block;
-  padding: 16px;
+  padding: 64px 72px;
   background: transparent;
 }
 .radar-wrapper.full-bg {
@@ -166,7 +166,7 @@ const fullBgStyle = computed(() => {
   border-radius: 16px;
 }
 .radar-wrapper.layout-narrow {
-  padding: 8px;
+  padding: 48px 56px;
 }
 .radar-svg {
   overflow: visible;
