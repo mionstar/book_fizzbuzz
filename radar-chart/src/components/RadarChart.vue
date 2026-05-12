@@ -56,12 +56,12 @@
         stroke-width="1.5"
       />
 
-      <!-- 軸ラベル -->
+      <!-- 軸ラベル（複数行対応） -->
       <text
         v-for="(pos, i) in labelPositions"
         :key="`label-${i}`"
         :x="pos.x"
-        :y="pos.y"
+        :y="pos.y - (wrapLabel(activeLabels[i]).length - 1) * LINE_HEIGHT / 2"
         :text-anchor="pos.anchor"
         dominant-baseline="middle"
         :font-family="config.fontFamily"
@@ -70,14 +70,21 @@
         font-size="12"
         fill="#333"
         class="axis-label"
-      >{{ activeLabels[i] }}</text>
+      >
+        <tspan
+          v-for="(line, li) in wrapLabel(activeLabels[i])"
+          :key="li"
+          :x="pos.x"
+          :dy="li === 0 ? 0 : LINE_HEIGHT"
+        >{{ line }}</tspan>
+      </text>
 
       <!-- スコアラベル -->
       <text
         v-for="(pos, i) in labelPositions"
         :key="`score-${i}`"
         :x="pos.x"
-        :y="pos.y + 16"
+        :y="pos.y + (wrapLabel(activeLabels[i]).length - 1) * LINE_HEIGHT / 2 + 16"
         :text-anchor="pos.anchor"
         dominant-baseline="middle"
         :font-family="config.fontFamily"
@@ -118,6 +125,17 @@ const axisCount = toRef(() => props.config.axes)
 const { gridPolygons, axisLines, labelPositions, calcDataPoints } = useGeometry(axisCount, cx, cy, radius)
 
 const dataMax = 100
+const LINE_HEIGHT = 15
+const MAX_CHARS = 9
+
+function wrapLabel(text) {
+  if (!text) return ['']
+  const lines = []
+  for (let i = 0; i < text.length; i += MAX_CHARS) {
+    lines.push(text.slice(i, i + MAX_CHARS))
+  }
+  return lines
+}
 
 const dataPointsStr = computed(() => {
   if (!props.data.length) return null
